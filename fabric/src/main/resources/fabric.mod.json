@@ -16,10 +16,10 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "com.holybuckets.chunkload.TemplateMainFabric"
+            "com.holybuckets.chunkload.BackgroundChunkLoaderMainFabricFabric"
         ],
         "client": [
-            "com.holybuckets.chunkload.TemplateMainFabricClient"
+            "com.holybuckets.chunkload.BackgroundChunkLoaderMainFabricFabricClient"
         ]
     },
     "mixins": [

@@ -11,12 +11,12 @@ import net.blay09.mods.balm.api.event.server.ServerStartingEvent;
  * Main instance of the mod, initialize this class statically via commonClass
  * This class will init all major Manager instances and events for the mod
  */
-public class TemplateMain {
+public class BackgroundChunkLoaderMain {
     private static boolean DEV_MODE = false;;
     private static TemplateConfig CONFIG;
-    public static TemplateMain INSTANCE;
+    public static BackgroundChunkLoaderMain INSTANCE;
 
-    public TemplateMain()
+    public BackgroundChunkLoaderMain()
     {
         super();
         INSTANCE = this;
@@ -26,29 +26,26 @@ public class TemplateMain {
 
     private void init()
     {
-
-        /*
-        Proxy for external APIs which are platform dependent
-        this.portalApi = (PortalApi) Balm.platformProxy()
-            .withFabric("com.holybuckets.challengetemple.externalapi.FabricPortalApi")
-            .withForge("com.holybuckets.challengetemple.externalapi.ForgePortalApi")
-            .build();
-            */
-
         //Events
         EventRegistrar registrar = EventRegistrar.getInstance();
-        //ChallengeBlockBehavior.init(registrar);
-
-
-        //register local events
         registrar.registerOnBeforeServerStarted(this::onServerStarting);
 
     }
 
     private void onServerStarting(ServerStartingEvent e) {
         CONFIG = Balm.getConfig().getActiveConfig(TemplateConfig.class);
-        //this.DEV_MODE = CONFIG.devMode;
         this.DEV_MODE = false;
+        apply();
+    }
+
+    public static void apply() {
+        CBackgroundLoading cfg = CONFIG.backgroundLoading;
+        PerformanceImpactConfig foundation = GeneralConfig.getInstance().getPerformanceImpactConfig();
+
+        foundation.setEnableChunkExplorer(cfg.loadChunksInBackground);
+        foundation.setChunkExploreRate(cfg.chunksLoadedPerMinute);
+        foundation.setChunkExploreMaximumDiskSize(cfg.stopAtWorldSizeGigabytes);
+        foundation.setChunkExploreMaxAllowedTickSize(cfg.skipChunkLoadingOnSlowServerTick);
     }
 
 

@@ -4,7 +4,6 @@ out.txt
 out1.txt
 **/build/*
 **/run/*
-.idea/
 claudeProjFiles/*
 CLAUDE.md
 .template-spec.md
