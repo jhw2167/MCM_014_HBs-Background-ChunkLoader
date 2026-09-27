@@ -14,8 +14,8 @@ public class BackgroundChunkLoaderConfig {
             @Comment("Quietly generates the world ahead of you while you play, so exploring feels smoother. Turn this off to stop all background work.")
             public boolean loadChunksInBackground = true;
 
-            @Comment("How many chunks to generate each minute. Higher means the world is ready sooner but the server works harder. Valid range 1 - 100.")
-            public int chunksLoadedPerMinute = 10;
+            @Comment("Frequency of chunk pregreneration loads. LOW, MEDIUM, HIGH, EXTREME. ")
+            public String chunkLoadFreqeuncy = "MEDIUM";
 
             @Comment("Stop generating once the world folder reaches this size, in gigabytes. Protects you from filling your disk.")
             public int stopAtWorldSizeGigabytes = 8;

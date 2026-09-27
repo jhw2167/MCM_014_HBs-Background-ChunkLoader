@@ -1,10 +1,11 @@
 package com.holybuckets.chunkload;
 
 
+import com.holybuckets.chunkload.config.BackgroundChunkLoaderConfig;
+import com.holybuckets.foundation.GeneralConfig;
+import com.holybuckets.foundation.config.PerformanceImpactConfig;
 import com.holybuckets.foundation.event.EventRegistrar;
-import com.holybuckets.chunkload.config.TemplateConfig;
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.event.EventPriority;
 import net.blay09.mods.balm.api.event.server.ServerStartingEvent;
 
 /**
@@ -13,7 +14,7 @@ import net.blay09.mods.balm.api.event.server.ServerStartingEvent;
  */
 public class BackgroundChunkLoaderMain {
     private static boolean DEV_MODE = false;;
-    private static TemplateConfig CONFIG;
+    private static BackgroundChunkLoaderConfig CONFIG;
     public static BackgroundChunkLoaderMain INSTANCE;
 
     public BackgroundChunkLoaderMain()
@@ -33,19 +34,38 @@ public class BackgroundChunkLoaderMain {
     }
 
     private void onServerStarting(ServerStartingEvent e) {
-        CONFIG = Balm.getConfig().getActiveConfig(TemplateConfig.class);
+        CONFIG = Balm.getConfig().getActiveConfig(BackgroundChunkLoaderConfig.class);
         this.DEV_MODE = false;
         apply();
     }
 
     public static void apply() {
-        CBackgroundLoading cfg = CONFIG.backgroundLoading;
+        BackgroundChunkLoaderConfig.CBackgroundLoading cfg = CONFIG.backgroundLoading;
         PerformanceImpactConfig foundation = GeneralConfig.getInstance().getPerformanceImpactConfig();
 
-        foundation.setEnableChunkExplorer(cfg.loadChunksInBackground);
-        foundation.setChunkExploreRate(cfg.chunksLoadedPerMinute);
+        boolean doLoad = cfg.loadChunksInBackground;
+
+        if (!doLoad) {
+            doLoad = false;
+            LoggerProject.logWarning("001000", "Background chunk loading disabled");
+        }
+
+        foundation.setEnableChunkExplorer(doLoad);
+        foundation.setChunkExploreRate(ChunkLoadFrequency.valueOf(cfg.chunkLoadFreqeuncy.toUpperCase()).getValue());
         foundation.setChunkExploreMaximumDiskSize(cfg.stopAtWorldSizeGigabytes);
         foundation.setChunkExploreMaxAllowedTickSize(cfg.skipChunkLoadingOnSlowServerTick);
+    }
+
+    public static enum ChunkLoadFrequency {
+        LOW(400),
+        MEDIUM(100),
+        HIGH(50),
+        EXTREME(10);
+
+        private final int value;
+
+        ChunkLoadFrequency(int value) {this.value = value; }
+        public int getValue() { return value; }
     }
 
 

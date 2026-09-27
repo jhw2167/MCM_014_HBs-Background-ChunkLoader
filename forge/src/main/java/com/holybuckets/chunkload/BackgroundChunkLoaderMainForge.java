@@ -8,9 +8,9 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod( Constants.MOD_ID)
-public class BackgroundChunkLoaderMainForgeForge {
+public class BackgroundChunkLoaderMainForge {
 
-    public BackgroundChunkLoaderMainForgeForge() {
+    public BackgroundChunkLoaderMainForge() {
         super();
         Balm.initialize(Constants.MOD_ID, CommonClass::init);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> BalmClient.initialize(Constants.MOD_ID, CommonClassClient::initClient));

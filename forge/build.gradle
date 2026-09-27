@@ -90,7 +90,11 @@ dependencies {
         transitive = false
     }
 
+    implementation fg.deobf("curse.maven:chunkpregenerator-${chunkpregenerator_project_id}:${chunkpregenerator_file_id}")
+
     implementation fg.deobf("curse.maven:create-${create_proj_id}:${create_forge_file_id}")
+
+    implementation fg.deobf("curse.maven:spark-361579:4738952")
 
 }
 

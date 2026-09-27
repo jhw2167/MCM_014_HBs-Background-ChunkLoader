@@ -1,10 +1,7 @@
 package com.holybuckets.chunkload;
 
+import com.holybuckets.chunkload.config.BackgroundChunkLoaderConfig;
 import com.holybuckets.foundation.event.BalmEventRegister;
-import com.holybuckets.chunkload.block.ModBlocks;
-import com.holybuckets.chunkload.block.be.ModBlockEntities;
-import com.holybuckets.chunkload.item.ModItems;
-import com.holybuckets.chunkload.menu.ModMenus;
 import com.holybuckets.chunkload.platform.Services;
 import net.blay09.mods.balm.api.Balm;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -28,17 +25,11 @@ public class CommonClass {
         if (Services.PLATFORM.isModLoaded(Constants.MOD_ID)) {
             Constants.LOG.info("Hello to " + Constants.MOD_NAME + "!");
         }
-
-        //RegisterConfigs
-        //Balm.getConfig().registerConfig(ChallengeTempleConfig.class);
+        Balm.getConfig().registerConfig(BackgroundChunkLoaderConfig.class);
         BackgroundChunkLoaderMain.INSTANCE = new BackgroundChunkLoaderMain();
         BalmEventRegister.registerEvents();
         BalmEventRegister.registerCommands();
-        ModBlocks.initialize(Balm.getBlocks());
-        ModBlockEntities.initialize(Balm.getBlockEntities());
-        ModItems.initialize(Balm.getItems());
-        ModMenus.initialize(Balm.getMenus());
-        
+
         isInitialized = true;
     }
 
